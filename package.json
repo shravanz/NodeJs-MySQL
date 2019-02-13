@@ -1,0 +1,25 @@
+{
+  "name": "NodeJs-MySQL",
+  "version": "1.0.0",
+  "description": "Project related to nodejs using MySQL Database",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shravanz/NodeJs-MySQL.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shravanz/NodeJs-MySQL/issues"
+  },
+  "homepage": "https://github.com/shravanz/NodeJs-MySQL#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mysql": "^2.16.0",
+    "nodemon": "^1.18.10"
+  }
+}

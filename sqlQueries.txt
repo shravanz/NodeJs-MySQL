@@ -1,0 +1,150 @@
+THis Queries are to refrence mysql npm below queries can be used as short cut
+
+///////////////Create Connection/////////////////////////////
+var con = mysql.createConnection({
+  host: "localhost",
+  user: "yourusername",
+  password: "yourpassword",
+});
+  database:"mydb"
+
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+});
+
+/////////////////////Query Database genral/////////////////////
+con.connect(function(err) {
+  if (err) throw err;
+  console.log("Connected!");
+  con.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log("Result: " + result);
+  });
+});
+****** Result Object Return ******
+{
+  fieldCount: 0,
+  affectedRows: 14,
+  insertId: 0,
+  serverStatus: 2,
+  warningCount: 0,
+  message: '\'Records:14  Duplicated: 0  Warnings: 0',
+  protocol41: true,
+  changedRows: 0
+}
+**********************************
+
+///////////////////Creating a Database///////////////////////////////////
+sql = "CREATE DATABASE mydb"   //Here myDb is database name you can give any name you want
+
+///////////////////Creating a Table//////////////////////////////////////
+sql = "CREATE TABLE customers (name VARCHAR(255), address VARCHAR(255))"
+
+///////////////////Creating a Table with primary key////////////////////
+sql = "CREATE TABLE customers (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), address VARCHAR(255))"
+
+////////////////// IF Table is Already exist USE ALTER ///////////////////
+sql = "ALTER TABLE customers ADD COLUMN id INT AUTO_INCREMENT PRIMARY KEY"
+
+////////////////// Insert into Table /////////////////////////////////////
+sql = "INSERT INTO customers (name, address) VALUES ('Company Inc', 'Highway 37')"
+
+////////////////// Insert Multiple Records ////////////////////////////////
+sql = "INSERT INTO customers (name, address) VALUES ?"
+var values = [
+    ['John', 'Highway 71'],
+    ['Peter', 'Lowstreet 4'],
+    ['Amy', 'Apple st 652'],
+    ['Hannah', 'Mountain 21'],
+    ['Michael', 'Valley 345']
+];
+con.query(sql, [values],cb..)   
+
+///////////////////// Insert a Record and Get an Id of it ///////////////////////////////
+sql = "INSERT INTO customers (name, address) VALUES ('Michelle', 'Blue Village 1')"
+
+con.query(sql,cb){
+    ..
+    ..
+    log(result.insertId)
+}
+
+//////////////////// Selecting From a Table//////////
+sql = "SELECT * FROM customers"
+log(result);
+
+/////////////////// Selecting Columns////////////////
+sql = SELECT name, address FROM customers
+log(result);
+
+/////////////////// the Filed object /////////////////
+The third parameter of the callback function is an array
+containing information about each field in the result.
+con.query(sql,cb(err,result,field){
+    ...
+    log(field);
+})
+
+/////////////////// Select with Filter /////////////////
+sql = "SELECT * FROM customers WHERE address = 'Park Lane 38'"
+
+//////////////// Wildcard Character ////////////////////////
+You can also select the records that starts, includes, or ends with a given letter or phrase.
+Use the '%' wildcard to represent zero, one or multiple characters
+sql = "SELECT * FROM customers WHERE address LIKE 'S%'"
+log(result);
+
+//////////////Escaping Query Values////////////////////////
+When query values are variables provided by the user, you should escape the values.
+This is to prevent SQL injections, which is a common web hacking technique to destroy or misuse your database
+con.connect(function(err) {
+  if (err) throw err;
+  var name = 'Amy';
+  var adr = 'Mountain 21';
+  //Escape the name and the address values:
+  var sql = 'SELECT * FROM customers WHERE name = ? OR address = ?';
+  //Send an array with value(s) to replace the escaped values:
+  con.query(sql, [name, adr], function (err, result) {
+    if (err) throw err;
+    console.log(result);
+  });
+});
+
+/////////////////////// ORDER by /////////////////////////////////
+Use the ORDER BY statement to sort the result in ascending or descending order.
+The ORDER BY keyword sorts the result ascending by default. 
+
+sql = "SELECT * FROM customers ORDER BY name"
+
+To sort the result in descending order, use the DESC keyword.
+
+sql = "SELECT * FROM customers ORDER BY name DESC"
+
+///////////////////////// DELETE /////////////////////////////////
+sql = "DELETE FROM customers WHERE address = 'Mountain 21'";
+** Notice the WHERE clause in the DELETE syntax: The WHERE clause specifies which record or records that should be deleted.
+ If you omit the WHERE clause, all records will be deleted!
+
+ ///////////////////////// DROP Table /////////////////////////////
+ sql = "DROP TABLE customers"
+ **Drop only if exist
+ sql = "DROP TABLE IF EXISTS customers"
+
+ //////////////////////// Update Table ////////////////////////////
+sql = "UPDATE customers SET address = 'Canyon 123' WHERE address = 'Valley 345'"
+Notice the WHERE clause in the UPDATE syntax: The WHERE clause specifies which record or records that should be updated.
+If you omit the WHERE clause, all records will be updated!
+
+/////////////////////// LIMIT the Result /////////////////////////
+
+sql = "SELECT * FROM customers LIMIT 5
+
+Start from Another position
+sql = "SELECT * FROM customers LIMIT 5 OFFSET 2"
+
+Note: "OFFSET 2", means starting from the third position, not the second!
+
+OR Shorter version
+sql = "SELECT * FROM customers LIMIT 2, 5"
+

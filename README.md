@@ -4,6 +4,10 @@ Project related to nodejs using MySQL Database
 
 Clone the project
 
-## npm install
+Next, from the project folder, install the dependencies:
 
-## node/nodemon app.js
+    npm i
+
+### Start the Server
+
+    node app.js

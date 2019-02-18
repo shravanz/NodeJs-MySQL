@@ -13,12 +13,17 @@ router.post("/product", (req, res, next) => {
   const price = req.body.price;
   const description = req.body.description;
   //create method define a new element based on that model and save to the database
-  Product.create({
-    title: title,
-    imageUrl: imageUrl,
-    price: price,
-    description: description
-  })
+  //when we make an assocaition where product belongto User, sequelize create magic function <create'Modelname'>
+  req.user
+    .createProduct({
+      title: title,
+      imageUrl: imageUrl,
+      price: price,
+      description: description
+      // Alternate Appraoch
+      //userId: req.user.id
+    })
+    // Product.create({})
     .then(result => {
       res.json({ msg: "Products added succesfully", response: result });
     })
@@ -42,6 +47,22 @@ router.get("/product/:id", (req, res, next) => {
   Product.findByPk(prodId)
     .then(Product => {
       res.json(Product);
+    })
+    .catch(err => {
+      next(err, req, res, next);
+    });
+  // Alternate Approach
+  // findAll({where:{id:prodId}}).then().catch() ==> result gives an array
+});
+
+router.get("/productUserMapping/:id", (req, res, next) => {
+  const prodId = req.params.id;
+  // Product.findByPk(prodId)
+  //when we make an assocaition where product belongto User, sequelize create magic function <get'Modelname'>
+  req.user
+    .getProducts({ where: { id: prodId } })
+    .then(products => {
+      res.json(products);
     })
     .catch(err => {
       next(err, req, res, next);

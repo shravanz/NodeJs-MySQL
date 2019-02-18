@@ -64,9 +64,15 @@ app.get("/getPost/:id", (req, res) => {
   let sql = `SELECT * from posts WHERE id = ${req.params.id}`;
   // TODO Here we need to validate the ID coming from request
   let query = db.query(sql, (err, result) => {
-    if (err) throw err;
-    console.log(result);
-    res.send(result);
+    if (err) {
+      res.json({ msg: "ERR" });
+    } else if (result[0].id == undefined) {
+      res.json({ msg: "ID not found" });
+    } else {
+      console.log(result[0].id);
+      console.log(query.sql);
+      res.json(result);
+    }
   });
 });
 //////////////////////// Update posts ///////////////////////////////////////

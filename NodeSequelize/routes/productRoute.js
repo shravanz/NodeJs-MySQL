@@ -3,7 +3,7 @@ const router = express.Router();
 // Importing Product Model
 const Product = require("../models/product");
 
-router.get("/test", (req, res) => {
+router.get("/productTest", (req, res) => {
   res.json("ProductRouteWorking");
 });
 
